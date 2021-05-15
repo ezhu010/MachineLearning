@@ -1,2 +1,2 @@
 # MachineLearning
-#CS170 Project #2
+CS170 Project #2
