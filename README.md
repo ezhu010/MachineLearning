@@ -1,5 +1,5 @@
 # MachineLearning
-Run the executable `./Search`
+Run the executable `./search`
 
 If the above command does not work then try these steps below:
 
