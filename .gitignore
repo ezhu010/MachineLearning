@@ -1,0 +1,12 @@
+# ignore any folders produced by visual studio code
+.vscode/
+.DS_Store
+
+#ignore any executable files
+*.exe
+
+#ignore files/folders produced by CMake
+
+
+#ignore .csv files
+*.csv
