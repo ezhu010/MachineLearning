@@ -1,4 +1,4 @@
-#ifndef __GREEDY_SEARACH__
+#ifndef __GREEDY_SEARCH__
 #define __GREEDY_SEARCH__
 #include "Node.h"
 #include <queue>

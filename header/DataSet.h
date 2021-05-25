@@ -13,12 +13,15 @@ struct Instance
 class DataSet
 {
 public:
+    DataSet() {}
     DataSet(string filename);
     void loadDataSet();
     void normalizeDataSet();
     std::vector<std::vector<std::string>> parsedCsv;
     std::vector<Instance *> getInstances();
+    void addInstance(Instance *);
     string filename;
+    DataSet *trimDataSet(const vector<int> &feature_subset);
 
 private:
     std::vector<Instance *> instances;
