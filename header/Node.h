@@ -10,6 +10,7 @@ class Node
 {
 public:
     Node();
+    ~Node();
     Node(int range);
     double getAccuracy();
     void setAccuracy();

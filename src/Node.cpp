@@ -8,6 +8,12 @@ Node::Node()
     this->features = {};
 }
 
+Node::~Node()
+{
+    for(auto s: children)
+        delete s;
+}
+
 Node::Node(int range)
 {
     this->parent = nullptr;

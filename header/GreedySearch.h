@@ -7,6 +7,7 @@ class GreedySearch
 {
 public:
     GreedySearch(int featureCount);
+    ~GreedySearch();
     void addFeatureSet(std::set<int> features);
     bool featureSetExists(std::set<int> features);
     void forwardSearch();

@@ -16,6 +16,12 @@ GreedySearch::GreedySearch(int featureCount)
     this->exploredFeatures = {};
 }
 
+GreedySearch::~GreedySearch()
+{
+    delete root;
+    delete backRoot;
+}
+
 void GreedySearch::addFeatureSet(std::set<int> features)
 {
     this->exploredFeatures.insert(features);

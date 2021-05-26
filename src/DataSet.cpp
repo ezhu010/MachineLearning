@@ -6,6 +6,12 @@ DataSet::DataSet(std::string filename)
     this->loadDataSet();
 }
 
+DataSet::~DataSet()
+{
+    for(int i = 0; i < instances.size(); i++)
+        delete instances[i];
+}
+
 std::vector<Instance *> DataSet::getInstances()
 {
     return instances;
