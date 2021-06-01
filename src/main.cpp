@@ -5,6 +5,9 @@
 #include "../header/Validator.h"
 #include <iostream>
 #include <stdio.h>
+#include <chrono>
+#include <ctime>
+#include <ratio>
 
 //  https://www.gormanalysis.com/blog/reading-and-writing-csv-files-with-cpp/
 using namespace std;
@@ -22,6 +25,7 @@ void print_vec(const vector<int> &vec)
 
 int main(int argc, char *argv[])
 {
+    auto start = chrono::high_resolution_clock::now();
     DataSet *data_set = new DataSet(argv[1]);
     Classifier *classifier = new NNClassifier();
     classifier->train(data_set);
@@ -42,6 +46,10 @@ int main(int argc, char *argv[])
     print_vec(feature_set);
     cout << '}' << endl;
     cout << validator->getAccuracy(feature_set, classifier) << endl;
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+    cout << "The algorithm took " << duration.count() / 1000000.0 << " seconds" << endl;
+
     /*
     srand(time(0));
     cout << "Welcome to XYZCoders Feature Selection Algorithm" << endl;
