@@ -25,7 +25,6 @@ void print_vec(const vector<int> &vec)
 
 int main(int argc, char *argv[])
 {
-    auto start = chrono::high_resolution_clock::now();
     DataSet *data_set = new DataSet(argv[1]);
     Classifier *classifier = new NNClassifier();
     classifier->train(data_set);
@@ -33,8 +32,9 @@ int main(int argc, char *argv[])
     cout << "Enter the Number of features" << endl;
     int n;
     cin >> n;
+    int tmp = n;
 
-    cout << "Enter the features you want to get the accuracy of:";
+    cout << "Enter the features you want to get the accuracy of" << endl;
     vector<int> feature_set;
     while (n--)
     {
@@ -45,10 +45,13 @@ int main(int argc, char *argv[])
     cout << "The accuracy of using features: {";
     print_vec(feature_set);
     cout << '}' << endl;
+    auto start = chrono::high_resolution_clock::now();
     cout << validator->getAccuracy(feature_set, classifier) << endl;
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-    cout << "The algorithm took " << duration.count() / 1000000.0 << " seconds" << endl;
+    cout << "The algorithm took " << duration.count() / 1000000.0 << " seconds" << " using " << tmp << " feature(s), with feature numbers: {";
+    print_vec(feature_set);
+    cout << '}' << endl;
 
     /*
     srand(time(0));
