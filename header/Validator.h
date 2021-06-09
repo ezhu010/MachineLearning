@@ -8,7 +8,7 @@ class Validator
 {
 public:
     Validator();
-    double getAccuracy(const vector<int> &feature_subset, Classifier *classifier);
+    double getAccuracy(const set<int> &feature_subset, Classifier *classifier);
     void trimDataSet(const vector<int> &feature_subset, DataSet *data_set);
     DataSet *rowTrimDataSet(int i, DataSet *);
 

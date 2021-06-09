@@ -1,16 +1,17 @@
 #include "../header/DataSet.h"
 
+DataSet::DataSet() {}
 DataSet::DataSet(std::string filename)
 {
     this->filename = filename;
     this->loadDataSet();
 }
 
-DataSet::~DataSet()
-{
-    for(int i = 0; i < instances.size(); i++)
-        delete instances[i];
-}
+// DataSet::~DataSet()
+// {
+//     for (int i = 0; i < instances.size(); i++)
+//         delete instances[i];
+// }
 
 std::vector<Instance *> DataSet::getInstances()
 {
@@ -58,6 +59,7 @@ void DataSet::loadDataSet()
         instances.push_back(temp);
     }
 
+    normalizeDataSet();
     // for (int i = 0; i < parsedCsv.size(); i++)
     // {
     //     for (int j = 0; j < parsedCsv[i].size() - 1; j++)
@@ -73,7 +75,7 @@ void DataSet::normalizeDataSet()
 
     int numCol = parsedCsv[0].size(); // includes class label as well --> num of features is numCol - 1
     int numRow = instances.size();
-
+    cout << numCol << endl;
     vector<double> avg;
     vector<double> stdDiv;
 
@@ -114,22 +116,26 @@ void DataSet::normalizeDataSet()
     }
 }
 
-DataSet *DataSet::trimDataSet(const vector<int> &feature_subset)
+DataSet *DataSet::trimDataSet(const set<int> &feature_subset)
 {
+
     DataSet *res = new DataSet();
+
     for (int i = 0; i < this->instances.size(); i++)
     {
         Instance *temp = new Instance();
-        for (int j = 0; j < parsedCsv[i].size() - 1; j++)
+        for (int j = 0; j < parsedCsv.at(i).size() - 1; j++)
         {
             if (find(feature_subset.begin(), feature_subset.end(), j + 1) != feature_subset.end())
             {
                 temp->feature_vals.push_back(this->instances[i]->feature_vals[j]);
             }
         }
+
         temp->class_label = this->instances[i]->class_label;
         temp->id = this->instances[i]->id;
         res->instances.push_back(temp);
     }
+    cout << parsedCsv.size() << endl;
     return res;
 }

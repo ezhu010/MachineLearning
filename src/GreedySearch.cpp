@@ -8,19 +8,34 @@ struct customCompareAccuracy
     }
 };
 
-GreedySearch::GreedySearch(int featureCount)
+GreedySearch::GreedySearch(int featureCount, Validator *validator, Classifier *classifier)
 {
     this->featureCount = featureCount;
-    this->root = new Node();
-    this->backRoot = new Node(featureCount);
+    this->validator = validator;
+    this->classifier = classifier;
+    this->root = new Node(validator, classifier);
+    this->backRoot = new Node(featureCount, validator, classifier);
     this->exploredFeatures = {};
+    this->root->setAccuracy();
+    this->backRoot->setAccuracy();
 }
 
-GreedySearch::~GreedySearch()
+Validator *GreedySearch::getValidator()
 {
-    delete root;
-    delete backRoot;
+    return this->validator;
 }
+
+Classifier *GreedySearch::getClassifier()
+{
+    return this->classifier;
+}
+
+// GreedySearch::~GreedySearch()
+// {
+
+//     delete root;
+//     delete backRoot;
+// }
 
 void GreedySearch::addFeatureSet(std::set<int> features)
 {
@@ -43,7 +58,7 @@ void GreedySearch::forwardSearch()
 {
     std::priority_queue<Node *, std::vector<Node *>, customCompareAccuracy> q;
     q.push(root);
-    std::cout << "Using no features and \"random\" evaluation, I get an accuracy of " << root->getAccuracy() << '%' << std::endl;
+    std::cout << "Using no features and \"random\" evaluation, I get an accuracy of " << root->getAccuracy() * 100 << '%' << std::endl;
     std::cout << "\nBeginning Forward Search.\n"
               << std::endl;
     while (!q.empty())
@@ -51,13 +66,13 @@ void GreedySearch::forwardSearch()
         Node *temp = q.top();
         std::cout << "\nFeature set ";
         temp->printFeatures();
-        std::cout << " was best, accuracy is " << temp->getAccuracy() << "%" << std::endl;
+        std::cout << " was best, accuracy is " << temp->getAccuracy() * 100 << "%" << std::endl;
         q.pop();
         if (q.top()->getFeatures().size() == this->featureCount)
         {
             std::cout << "The best feature subset is ";
             temp->printFeatures();
-            std::cout << " with an accuracy of " << temp->getAccuracy() << "%" << std::endl;
+            std::cout << " with an accuracy of " << temp->getAccuracy() * 100 << "%" << std::endl;
             return; // reached bottom of tree
         }
         for (int i = 1; i <= this->featureCount; i++)
@@ -68,7 +83,6 @@ void GreedySearch::forwardSearch()
             {
                 if (i == featureCount)
                 {
-                    //std::cout << "HERE\n";
                     bool allLower = true;
                     for (auto it : temp->getChildren())
                     {
@@ -81,7 +95,7 @@ void GreedySearch::forwardSearch()
                     {
                         std::cout << "The best feature subset is ";
                         temp->printFeatures();
-                        std::cout << " with an accuracy of " << temp->getAccuracy() << "%" << std::endl;
+                        std::cout << " with an accuracy of " << temp->getAccuracy() * 100 << "%" << std::endl;
                         return; // accuracy has decreased
                     }
                 }
@@ -90,10 +104,11 @@ void GreedySearch::forwardSearch()
             else
             {
                 this->addFeatureSet(tmpSet);
-                Node *newNode = temp->createChildren(i);
+                Node *newNode = temp->createChildren(i, validator, classifier);
+
                 std::cout << "Using feature(s) ";
                 newNode->printFeatures();
-                std::cout << " accuracy is " << newNode->getAccuracy() << '%' << std::endl;
+                std::cout << " accuracy is " << newNode->getAccuracy() * 100 << '%' << std::endl;
                 if (newNode->getAccuracy() >= temp->getAccuracy())
                 {
                     q.push(newNode);
@@ -116,7 +131,7 @@ void GreedySearch::forwardSearch()
                         {
                             std::cout << "The best feature subset is ";
                             temp->printFeatures();
-                            std::cout << " with an accuracy of " << temp->getAccuracy() << "%" << std::endl;
+                            std::cout << " with an accuracy of " << temp->getAccuracy() * 100 << "%" << std::endl;
                             return; // accuracy has decreased
                         }
                     }
@@ -131,7 +146,7 @@ void GreedySearch::backwardSearch()
 
     std::priority_queue<Node *, std::vector<Node *>, customCompareAccuracy> q;
     q.push(backRoot);
-    std::cout << "Using all features and \"random\" evaluation, I get an accuracy of " << backRoot->getAccuracy() << '%' << std::endl;
+    std::cout << "Using all features and \"random\" evaluation, I get an accuracy of " << backRoot->getAccuracy() * 100 << '%' << std::endl;
     std::cout << "\nBeginning Backward Search.\n"
               << std::endl;
     while (!q.empty())
@@ -139,13 +154,13 @@ void GreedySearch::backwardSearch()
         Node *temp = q.top();
         std::cout << "\nFeature set ";
         temp->printFeatures();
-        std::cout << " was best, accuracy is " << temp->getAccuracy() << "%" << std::endl;
+        std::cout << " was best, accuracy is " << temp->getAccuracy() * 100 << "%" << std::endl;
         q.pop();
         if (q.top()->getFeatures().empty())
         {
             std::cout << "The best feature subset is ";
             temp->printFeatures();
-            std::cout << " with an accuracy of " << temp->getAccuracy() << "%" << std::endl;
+            std::cout << " with an accuracy of " << temp->getAccuracy() * 100 << "%" << std::endl;
             return; // reached bottom of tree
         }
         for (int i = 1; i <= this->featureCount; i++)
@@ -172,7 +187,7 @@ void GreedySearch::backwardSearch()
                     {
                         std::cout << "The best feature subset is ";
                         temp->printFeatures();
-                        std::cout << " with an accuracy of " << temp->getAccuracy() << "%" << std::endl;
+                        std::cout << " with an accuracy of " << temp->getAccuracy() * 100 << "%" << std::endl;
                         return; // accuracy has decreased
                     }
                 }
@@ -181,10 +196,10 @@ void GreedySearch::backwardSearch()
             else
             {
                 this->addFeatureSet(tmpSet);
-                Node *newNode = temp->removeChildren(i);
+                Node *newNode = temp->removeChildren(i, validator, classifier);
                 std::cout << "Using feature(s) ";
                 newNode->printFeatures();
-                std::cout << " accuracy is " << newNode->getAccuracy() << '%' << std::endl;
+                std::cout << " accuracy is " << newNode->getAccuracy() * 100 << '%' << std::endl;
                 if (newNode->getAccuracy() >= temp->getAccuracy())
                 {
                     q.push(newNode);
@@ -207,7 +222,7 @@ void GreedySearch::backwardSearch()
                         {
                             std::cout << "The best feature subset is ";
                             temp->printFeatures();
-                            std::cout << " with an accuracy of " << temp->getAccuracy() << "%" << std::endl;
+                            std::cout << " with an accuracy of " << temp->getAccuracy() * 100 << "%" << std::endl;
                             return; // accuracy has decreased
                         }
                     }
