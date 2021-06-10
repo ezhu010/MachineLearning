@@ -23,7 +23,7 @@ double Validator::getAccuracy(const set<int> &feature_subset, Classifier *classi
     }
     else
     {
-        cout << "TEST ELSE" << endl;
+        //cout << "TEST ELSE" << endl;
 
         DataSet *new_trim_data = classifier->getDataSet()->trimDataSet(feature_subset);
         int feature_size = new_trim_data->getInstances().at(0)->feature_vals.size();

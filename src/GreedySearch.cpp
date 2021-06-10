@@ -58,15 +58,15 @@ void GreedySearch::forwardSearch()
 {
     std::priority_queue<Node *, std::vector<Node *>, customCompareAccuracy> q;
     q.push(root);
-    std::cout << "Using no features and \"random\" evaluation, I get an accuracy of " << root->getAccuracy() * 100 << '%' << std::endl;
-    std::cout << "\nBeginning Forward Search.\n"
-              << std::endl;
+    // std::cout << "Using no features and \"random\" evaluation, I get an accuracy of " << root->getAccuracy() * 100 << '%' << std::endl;
+    // std::cout << "\nBeginning Forward Search.\n"
+    //           << std::endl;
     while (!q.empty())
     {
         Node *temp = q.top();
-        std::cout << "\nFeature set ";
-        temp->printFeatures();
-        std::cout << " was best, accuracy is " << temp->getAccuracy() * 100 << "%" << std::endl;
+        // std::cout << "\nFeature set ";
+        // temp->printFeatures();
+        // std::cout << " was best, accuracy is " << temp->getAccuracy() * 100 << "%" << std::endl;
         q.pop();
         if (q.top()->getFeatures().size() == this->featureCount)
         {
@@ -146,15 +146,15 @@ void GreedySearch::backwardSearch()
 
     std::priority_queue<Node *, std::vector<Node *>, customCompareAccuracy> q;
     q.push(backRoot);
-    std::cout << "Using all features and \"random\" evaluation, I get an accuracy of " << backRoot->getAccuracy() * 100 << '%' << std::endl;
-    std::cout << "\nBeginning Backward Search.\n"
-              << std::endl;
+    // std::cout << "Using all features and \"random\" evaluation, I get an accuracy of " << backRoot->getAccuracy() * 100 << '%' << std::endl;
+    // std::cout << "\nBeginning Backward Search.\n"
+    //           << std::endl;
     while (!q.empty())
     {
         Node *temp = q.top();
-        std::cout << "\nFeature set ";
-        temp->printFeatures();
-        std::cout << " was best, accuracy is " << temp->getAccuracy() * 100 << "%" << std::endl;
+        // std::cout << "\nFeature set ";
+        // temp->printFeatures();
+        // std::cout << " was best, accuracy is " << temp->getAccuracy() * 100 << "%" << std::endl;
         q.pop();
         if (q.top()->getFeatures().empty())
         {

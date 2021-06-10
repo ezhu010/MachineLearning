@@ -61,9 +61,7 @@ Node *Node::createChildren(int featureNumber, Validator *validator, Classifier *
     child->features.insert(featureNumber);
     child->parent = this;
     this->children.insert(child);
-    cout << "before" << endl;
     child->accuracy = child->validator->getAccuracy(child->features, child->classifier);
-    cout << "after" << endl;
     return child;
 }
 

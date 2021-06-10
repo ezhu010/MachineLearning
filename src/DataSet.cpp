@@ -75,7 +75,6 @@ void DataSet::normalizeDataSet()
 
     int numCol = parsedCsv[0].size(); // includes class label as well --> num of features is numCol - 1
     int numRow = instances.size();
-    cout << numCol << endl;
     vector<double> avg;
     vector<double> stdDiv;
 
@@ -136,6 +135,6 @@ DataSet *DataSet::trimDataSet(const set<int> &feature_subset)
         temp->id = this->instances[i]->id;
         res->instances.push_back(temp);
     }
-    cout << parsedCsv.size() << endl;
+    //cout << parsedCsv.size() << endl;
     return res;
 }
